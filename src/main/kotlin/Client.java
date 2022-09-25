@@ -1,0 +1,65 @@
+import java.io.*;
+import java.net.Socket;
+
+public class Client {
+
+    private static Socket clientSocket;
+    private static BufferedReader reader;
+
+    private static BufferedReader in;
+    private static BufferedWriter out;
+
+    public static void main(String[] args) {
+        try {
+            try {
+
+                clientSocket = new Socket("localhost", 4004);
+
+                reader = new BufferedReader(new InputStreamReader(System.in));
+
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+
+
+                System.out.println("Введите сообщение которое надо зашифровать");
+
+
+                String word = reader.readLine();
+                out.write(word + "\n");
+                out.flush();
+
+
+                String answer = in.readLine();
+                System.out.println(answer + "\n");
+
+                String key = reader.readLine();
+                out.write(key + "\n");
+                out.flush();
+
+                String cipherText = in.readLine();
+                System.out.println(cipherText);
+
+                answer = in.readLine();
+                System.out.println(answer + "\n");
+
+                key = reader.readLine();
+                out.write(key + "\n");
+                out.flush();
+
+                answer = in.readLine();
+                System.out.println(answer + "\n");
+
+
+            } finally {
+                System.out.println("Клиент был закрыт...");
+                clientSocket.close();
+                in.close();
+                out.close();
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+
+    }
+}
